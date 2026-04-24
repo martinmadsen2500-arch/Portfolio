@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Admin — Farwa Zehra Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,400;1,500&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="/css/style.css"/>
+<link rel="stylesheet" href="/css/admin.css"/>
+</head>
+<body>
+<div id="loginScreen" class="login-screen">
+  <div class="login-box">
+    <div class="login-mark">FZ</div>
+    <h1 class="login-title">Admin panel</h1>
+    <p class="login-sub">Sign in to manage your portfolio</p>
+    <div class="login-error" id="loginError">Incorrect password. Please try again.</div>
+    <input type="password" class="login-input" id="loginPwd" placeholder="Enter password" onkeydown="if(event.key==='Enter')doLogin()"/>
+    <button class="login-btn" onclick="doLogin()">Sign in</button>
+    <a href="/" class="login-back">Back to portfolio</a>
+  </div>
+</div>
+
+<div id="adminPanel" class="admin-panel" style="display:none;">
+  <div class="admin-header">
+    <div class="admin-header-left">
+      <div class="admin-logo">FZ</div>
+      <div>
+        <div class="admin-title">Portfolio Manager</div>
+        <div class="admin-subtitle" id="headerCount">Loading…</div>
+      </div>
+    </div>
+    <div class="admin-header-right">
+      <a href="/" target="_blank" class="admin-nav-link">View site</a>
+      <button class="admin-logout" onclick="logout()">Sign out</button>
+    </div>
+  </div>
+
+  <div class="admin-body">
+    <aside class="upload-panel">
+      <div class="panel-title">Add new piece</div>
+      <div class="form-group">
+        <label class="form-label">Title *</label>
+        <input type="text" class="form-input" id="fTitle" placeholder="e.g. Beauty brand Reels campaign"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Category *</label>
+        <select class="form-input" id="fCategory">
+          <option value="">Select category…</option>
+          <option>Reels &amp; Video</option>
+          <option>Graphics &amp; Carousels</option>
+          <option>Content Strategy</option>
+          <option>Brand Identity</option>
+          <option>Campaigns</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Description</label>
+        <textarea class="form-input" id="fDesc" placeholder="Platform used, results, brand niche…" rows="3"></textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Media file *</label>
+        <div class="drop-zone" id="dropZone" onclick="document.getElementById('fileInput').click()" ondragover="dragOver(event)" ondragleave="dragLeave()" ondrop="dropFile(event)">
+          <div class="dz-icon">↑</div>
+          <div class="dz-text"><strong>Click to upload</strong> or drag and drop</div>
+          <div class="dz-hint">Images (JPG PNG WebP GIF) · Videos (MP4 MOV WebM) · Max 100MB</div>
+        </div>
+        <input type="file" id="fileInput" accept="image/*,video/*" style="display:none" onchange="fileSelected(this)"/>
+        <div class="file-preview" id="filePreview" style="display:none;">
+          <div class="file-preview-inner">
+            <span id="fileName"></span>
+            <span id="fileSize"></span>
+            <button onclick="clearFile()">✕</button>
+          </div>
+          <div id="mediaPreview" style="margin-top:8px;"></div>
+        </div>
+      </div>
+      <button class="submit-btn" id="submitBtn" onclick="uploadItem()">Add to portfolio</button>
+      <div class="upload-progress" id="uploadProgress" style="display:none;">
+        <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+        <div class="progress-label" id="progressLabel">Uploading…</div>
+      </div>
+    </aside>
+
+    <main class="items-panel">
+      <div class="items-header">
+        <div class="items-title">Your portfolio</div>
+        <input type="text" class="search-input" id="searchInput" placeholder="Search…" oninput="filterAdmin()"/>
+      </div>
+      <div id="adminItems" class="admin-items"></div>
+    </main>
+  </div>
+</div>
+
+<div class="modal-overlay" id="deleteModal" style="display:none;">
+  <div class="modal-box">
+    <div class="modal-title">Delete this piece?</div>
+    <div class="modal-body">This will permanently remove the file. This cannot be undone.</div>
+    <div class="modal-actions">
+      <button class="modal-cancel" onclick="closeDeleteModal()">Cancel</button>
+      <button class="modal-confirm" id="confirmDeleteBtn">Delete</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<script src="/js/admin.js"></script>
+</body>
+</html>
